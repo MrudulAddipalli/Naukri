@@ -2,18 +2,18 @@ import 'package:intl/intl.dart';
 
 String timeAgo(String date) {
   DateTime dateTime = DateTime.parse(date);
-  String daysago = DateTime.now().difference(dateTime).inDays.toString();
-  String hoursago;
-  String secondsago;
-  if (daysago == "0") {
-    hoursago = DateTime.now().difference(dateTime).inHours.toString();
-    return "$hoursago Hours Ago";
-  } else if (hoursago == "0") {
-    secondsago = DateTime.now().difference(dateTime).inSeconds.toString();
-    return "$secondsago Seconds Ago";
+  int daysago = DateTime.now().difference(dateTime).inDays;
+  int hoursago = DateTime.now().difference(dateTime).inHours;
+  int minutesago = DateTime.now().difference(dateTime).inMinutes;
+  String message = "";
+  if (daysago == 0 && hoursago <= 0) {
+    message = "$minutesago Minutes Ago";
+  } else if (daysago == 0) {
+    message = "$hoursago Hours Ago";
   } else {
-    return "$daysago Days Ago";
+    message = "$daysago Days Ago";
   }
+  return message;
 }
 
 String customDay(DateTime date) {

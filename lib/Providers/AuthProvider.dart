@@ -47,53 +47,27 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> signIn(User userdata) async {
+    // await Future.delayed(Duration(hours: 1));
     var params = {
       "email": userdata.email,
       "password": userdata.password,
     };
-    try {
+    return _diohelper.apiCall(steps: () async {
       Response response = await _dio.post(url.login, data: params);
-
       if (response.statusCode == 200) {
         await setupSharedPreferencesForUser(response);
         return {"status": "success"};
       }
-    } on DioError catch (errors) {
-      if (errors.type == DioErrorType.other) {
-        Map<String, dynamic> errorMap = {};
-        errorMap
-            .addAll({"generalerror": "Please Check Your Internet Connection"});
-        return {
-          "status": "failed",
-          "errors": errorMap,
-        };
-      }
-      // return ErrorHandler.returnError(errors);
-    } catch (errors) {
-      // return ErrorHandler.returnError(errors);
-    }
+    });
   }
 
   Future<Map<String, dynamic>> forgetPassword({String email}) async {
-    try {
+    return _diohelper.apiCall(steps: () async {
       Response response =
           await _dio.get(url.resetpassword, queryParameters: {'email': email});
       var data = response.data["data"];
       return {"status": "success", "token": data["token"].toString()};
-    } on DioError catch (errors) {
-      if (errors.type == DioErrorType.other) {
-        Map<String, dynamic> errorMap = {};
-        errorMap
-            .addAll({"generalerror": "Please Check Your Internet Connection"});
-        return {
-          "status": "failed",
-          "errors": errorMap,
-        };
-      }
-      // return ErrorHandler.returnError(errors);
-    } catch (errors) {
-      // return ErrorHandler.returnError(errors);
-    }
+    });
   }
 
   Future<Map<String, dynamic>> confirmResetPassword(
@@ -103,26 +77,13 @@ class AuthProvider with ChangeNotifier {
       "confirmPassword": confirmPassword,
       "token": token,
     };
-    try {
+    return _diohelper.apiCall(steps: () async {
       Response response = await _dio.post(url.resetpassword, data: params);
       if (response.statusCode == 200) {
         await setupSharedPreferencesForUser(response);
         return {"status": "success"};
       }
-    } on DioError catch (errors) {
-      if (errors.type == DioErrorType.other) {
-        Map<String, dynamic> errorMap = {};
-        errorMap
-            .addAll({"generalerror": "Please Check Your Internet Connection"});
-        return {
-          "status": "failed",
-          "errors": errorMap,
-        };
-      }
-      // return ErrorHandler.returnError(errors);
-    } catch (errors) {
-      // return ErrorHandler.returnError(errors);
-    }
+    });
   }
 
   Future<Map<String, dynamic>> signUp(User userdata) async {
@@ -132,53 +93,35 @@ class AuthProvider with ChangeNotifier {
       "email": userdata.email,
       "password": userdata.password,
       "confirmPassword": userdata.confirmpassword,
-      "skills": (userdata.userRole == 1) ? "I am Recruiter" : userdata.skills,
+      "skills": (userdata.userRole == 0) ? "I am Recruiter" : userdata.skills,
     };
-
-    print("params - $params");
-
-    try {
+    return _diohelper.apiCall(steps: () async {
       Response response = await _dio.post(url.register, data: params);
-      //
-      if (response.statusCode == 200) {
-        await setupSharedPreferencesForUser(response);
-        return {"status": "success"};
-      }
-    } on DioError catch (errors) {
-      if (errors.type == DioErrorType.other) {
-        Map<String, dynamic> errorMap = {};
-        errorMap
-            .addAll({"generalerror": "Please Check Your Internet Connection"});
-        return {
-          "status": "failed",
-          "errors": errorMap,
-        };
-      }
-      // return ErrorHandler.returnError(errors);
-    } catch (errors) {
-      // return ErrorHandler.returnError(errors);
-    }
+      if (response.statusCode == 200) {}
+      await setupSharedPreferencesForUser(response);
+      return {"status": "success"};
+    });
   }
 
   Future<void> setupSharedPreferencesForUser(Response response) async {
     User userdata = User.fromJson(response.data["data"]);
     _user = userdata; // local user
     _prefs = await SharedPreferences.getInstance();
-    _prefs.setString("email", userdata.email);
-    _prefs.setString("name", userdata.name);
-    _prefs.setString("skills", userdata.skills);
-    _prefs.setInt("userRole", userdata.userRole);
-    _prefs.setString("createdAt", userdata.createdAt);
-    _prefs.setString("updatedAt", userdata.updatedAt);
-    _prefs.setString("id", userdata.id);
-    _prefs.setString("token", userdata.token);
+    await _prefs.setString("email", userdata.email);
+    await _prefs.setString("name", userdata.name);
+    await _prefs.setString("skills", userdata.skills);
+    await _prefs.setInt("userRole", userdata.userRole);
+    await _prefs.setString("createdAt", userdata.createdAt);
+    await _prefs.setString("updatedAt", userdata.updatedAt);
+    await _prefs.setString("id", userdata.id);
+    await _prefs.setString("token", userdata.token);
   }
 
   int resolveUserRole(String userRole) {
     if (userRole == "Recruiter") {
-      return 1;
-    } else if (userRole == "Candidate") {
       return 0;
+    } else if (userRole == "Candidate") {
+      return 1;
     }
   }
 

@@ -53,10 +53,10 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     //
     //
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: LayoutBuilder(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: LayoutBuilder(
           builder: (context, constraint) {
             return Center(
               child: SingleChildScrollView(
@@ -89,7 +89,9 @@ class _SignUpState extends State<SignUp> {
                                   icon: Icon(Icons.keyboard_arrow_down),
                                   hint: new Text(
                                     selectedUserRole ?? "Select User Type",
-                                    style: Theme.textfield_textstyle,
+                                    style: (selectedUserRole != null)
+                                        ? Theme.textfield_textstyle
+                                        : Theme.hint_textfield_textstyle,
                                   ),
                                   items: FormFields.userroles
                                       .map<DropdownMenuItem<String>>(
@@ -136,7 +138,7 @@ class _SignUpState extends State<SignUp> {
                                     errorBorder: InputBorder.none,
                                     disabledBorder: InputBorder.none,
                                     hintText: "Please Enter Name",
-                                    hintStyle: Theme.textfield_textstyle,
+                                    hintStyle: Theme.hint_textfield_textstyle,
                                   ),
                                 ),
                               ),
@@ -160,7 +162,7 @@ class _SignUpState extends State<SignUp> {
                                     errorBorder: InputBorder.none,
                                     disabledBorder: InputBorder.none,
                                     hintText: "Please Enter Email",
-                                    hintStyle: Theme.textfield_textstyle,
+                                    hintStyle: Theme.hint_textfield_textstyle,
                                   ),
                                 ),
                               ),
@@ -189,7 +191,8 @@ class _SignUpState extends State<SignUp> {
                                           errorBorder: InputBorder.none,
                                           disabledBorder: InputBorder.none,
                                           hintText: "Please Enter Password",
-                                          hintStyle: Theme.textfield_textstyle,
+                                          hintStyle:
+                                              Theme.hint_textfield_textstyle,
                                         ),
                                       ),
                                     ),
@@ -244,7 +247,8 @@ class _SignUpState extends State<SignUp> {
                                           disabledBorder: InputBorder.none,
                                           hintText:
                                               "Please Enter Confirm Password",
-                                          hintStyle: Theme.textfield_textstyle,
+                                          hintStyle:
+                                              Theme.hint_textfield_textstyle,
                                         ),
                                       ),
                                     ),
@@ -368,7 +372,7 @@ class _SignUpState extends State<SignUp> {
 
                                 // checking skills for candidate
 
-                                if (role == 0 &&
+                                if (role == 1 &&
                                     (userSkills.toString() == "" ||
                                         userSkills == null)) {
                                   print(
@@ -394,7 +398,7 @@ class _SignUpState extends State<SignUp> {
                                 if (response["status"] == "success") {
                                   print("success - goto main page");
                                   setState(() {
-                                    if (role == 0 &&
+                                    if (role == 1 &&
                                         (userSkills.toString() == "" ||
                                             userSkills == null)) {
                                       errors.addAll({
@@ -410,7 +414,7 @@ class _SignUpState extends State<SignUp> {
                                   print("failed");
                                   setState(() {
                                     errors = response["errors"];
-                                    if (role == 0 &&
+                                    if (role == 1 &&
                                         (userSkills.toString() == "" ||
                                             userSkills == null)) {
                                       errors.addAll({

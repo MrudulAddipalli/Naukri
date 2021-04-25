@@ -1,52 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../Providers/AuthProvider.dart';
-import '../Providers/JobProvider.dart';
-import '../Models/User.dart';
-import '../Models/Job.dart';
-
-import "../Utilities/UIHelpers/dailogs.dart";
+import '../../../Providers/JobProvider.dart';
+import '../../../Models/Job.dart';
+import "../../../Utilities/UIHelpers/dailogs.dart";
 import '../Utilities/Widgets/largebutton.dart';
-import '../Utilities/Widgets/candidatejoblist.dart';
-import '../../Constansts/theme.dart' as Theme;
+import './alljoblist.dart';
 
-class JobDescription extends StatefulWidget {
-  String jobId;
-  JobDescription({this.jobId});
+class AllJobs extends StatefulWidget {
   @override
-  _JobDescriptionState createState() => _JobDescriptionState();
+  AllJobsState createState() => AllJobsState();
 }
 
-class _JobDescriptionState extends State<JobDescription> {
-  //
-  var authProvider;
+class AllJobsState extends State<AllJobs> {
   var jobProvider;
   Map<String, dynamic> errors;
-  Data singleJobDesc; // Job->Data
-  User user;
+  List<Data> jobData; // Job -> Data
 
-  //
   @override
   void initState() {
     super.initState();
-    authProvider = Provider.of<AuthProvider>(context, listen: false);
     jobProvider = Provider.of<JobProvider>(context, listen: false);
-    user = authProvider.loggedInUser;
     () async {
-      await getJobDescription();
+      await getJobDetails();
     }();
   }
 
-  getJobDescription() async {
-    Map<String, dynamic> response =
-        await jobProvider.jobDescriptionFor(widget.jobId);
-
+  getJobDetails() async {
+    Map<String, dynamic> response = await jobProvider.getAllJobs();
     if (response["status"] == "success") {
       print("success - show job data");
       setState(() {
         errors = null;
-        singleJobDesc = response["singleJobDesc"];
+        jobData = response["jobData"];
       });
     } else {
       print("failed");
@@ -82,15 +68,27 @@ class _JobDescriptionState extends State<JobDescription> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: (singleJobDesc != null)
-          ? Container(
-              child: Text("effs"),
-            )
-          : Center(
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 5,
+        title: Text("Naukri.com"),
+      ),
+      backgroundColor: Colors.white,
+      body: (jobData == null)
+          ? Center(
               child: (errors == null)
                   ? CircularProgressIndicator()
                   : Text('Oops!! Something Went Wrong'),
+            )
+          : RefreshIndicator(
+              onRefresh: () async {
+                setState(() {
+                  jobData = null;
+                  errors = null;
+                  getJobDetails();
+                });
+              },
+              child: AllJobList(jobData: jobData),
             ),
     );
   }

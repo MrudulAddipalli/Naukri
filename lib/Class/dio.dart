@@ -46,7 +46,12 @@ class DIO {
         errorMap.addAll(jsonObject["errors"][i]);
       }
     } else if (jsonObject["message"] != null) {
-      errorMap.addAll({"generalerror": jsonObject["message"]});
+      errorMap.addAll({
+        "generalerror": (jsonObject["message"] == "Forbidden route" ||
+                jsonObject["message"] == "You are not authorized")
+            ? "Please Sign In Proceed Further"
+            : jsonObject["message"]
+      });
     }
     print("singin/up error -$errorMap");
     return {

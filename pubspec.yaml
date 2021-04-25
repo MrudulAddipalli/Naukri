@@ -28,6 +28,7 @@ flutter:
     - assets/images/main_logo.png
     - assets/images/open_eye.png
     - assets/images/hide_eye.png
+    - assets/images/person.png
 
   fonts:
     - family: Quicksand

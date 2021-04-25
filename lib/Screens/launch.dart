@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import "dart:async";
 import 'package:provider/provider.dart';
 
-import '../Models/User.dart';
-
 import '../Providers/AuthProvider.dart';
-import '../Screens/singin.dart';
 import '../Screens/splash.dart';
 import '../Screens/dashboard.dart';
-import '../Screens/candidatescreen.dart';
+import '../Screens/alljobs.dart';
 
 class Launch extends StatefulWidget {
   @override
@@ -41,13 +38,12 @@ class _HomeScreenState extends State<Launch> {
 
   @override
   Widget build(BuildContext context) {
-    return (loading)
-        ? Splash()
-        : (autoSignInSuccessfull)
-            ? DashBoard()
-            // ? (loggedInUser.userRole == 0)
-            //     ? CandidateScreen() // Candidate Page
-            //     : CandidateScreen() // Recruiter Page
-            : SignIn();
+    return Scaffold(
+      body: (loading)
+          ? Splash()
+          : (autoSignInSuccessfull)
+              ? DashBoard()
+              : AllJobs(),
+    );
   }
 }

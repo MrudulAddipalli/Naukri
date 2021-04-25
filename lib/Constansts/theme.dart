@@ -16,6 +16,12 @@ final TextStyle textfield_textstyle = TextStyle(
   color: Colors.black,
 );
 
+final TextStyle hint_textfield_textstyle = TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.w200,
+  color: Colors.black,
+);
+
 final TextStyle title_textfield_textstyle_25 = TextStyle(
   fontSize: 25,
   fontWeight: FontWeight.bold,
