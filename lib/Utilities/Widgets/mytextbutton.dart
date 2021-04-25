@@ -14,14 +14,14 @@ class MyTextButton extends StatelessWidget {
     return Container(
       margin: EdgeInsets.all(10),
       child: InkWell(
-        onTap: callback,
+        onTap: callback ?? () {},
         child: Container(
           padding: EdgeInsets.all(10),
           child: Text(
             text ?? "",
             style: TextStyle(
-              fontSize: 16,
-              color: color,
+              fontSize: 18,
+              color: color ?? Colors.black,
             ),
           ),
         ),

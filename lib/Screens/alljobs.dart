@@ -5,7 +5,10 @@ import '../../../Providers/JobProvider.dart';
 import '../../../Models/Job.dart';
 import "../../../Utilities/UIHelpers/dailogs.dart";
 import '../Utilities/Widgets/largebutton.dart';
+import '../Utilities/Widgets/mytextbutton.dart';
 import './alljoblist.dart';
+
+import "../Constansts/theme.dart" as Theme;
 
 class AllJobs extends StatefulWidget {
   @override
@@ -71,7 +74,19 @@ class AllJobsState extends State<AllJobs> {
     return Scaffold(
       appBar: AppBar(
         elevation: 5,
-        title: Text("Naukri.com"),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Naukri.com"),
+            MyTextButton(
+              text: "Login",
+              callback: () {
+                Navigator.popAndPushNamed(context, "/SignIn");
+              },
+              color: Colors.white,
+            ),
+          ],
+        ),
       ),
       backgroundColor: Colors.white,
       body: (jobData == null)
