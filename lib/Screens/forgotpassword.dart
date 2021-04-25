@@ -79,7 +79,12 @@ class _ForgotPassWordState extends State<ForgotPassWord> {
                   LargeButton(
                     text: "Thank You",
                     callback: () {
-                      Navigator.of(context).popUntil(ModalRoute.withName('/'));
+                      // Navigator.of(context)
+                      //     .popUntil(ModalRoute.withName('/SignUp'));
+
+                      Navigator.pop(
+                          context); // Your password has been reset successfully.
+                      Navigator.pop(context); // Forgot Password
                     },
                     type: "blue",
                   ),
@@ -146,10 +151,10 @@ class _ForgotPassWordState extends State<ForgotPassWord> {
     }
 
     //
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: LayoutBuilder(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: LayoutBuilder(
           builder: (context, constraint) {
             return Center(
               child: SingleChildScrollView(
@@ -185,7 +190,7 @@ class _ForgotPassWordState extends State<ForgotPassWord> {
                                       errorBorder: InputBorder.none,
                                       disabledBorder: InputBorder.none,
                                       hintText: "Please Enter Email",
-                                      hintStyle: Theme.textfield_textstyle,
+                                      hintStyle: Theme.hint_textfield_textstyle,
                                     ),
                                   ),
                                 ),
@@ -428,6 +433,14 @@ class _ForgotPassWordState extends State<ForgotPassWord> {
                                 type: "blue",
                               ),
                             ),
+                          SizedBox(height: 50),
+                          LargeButton(
+                            text: "Cancel",
+                            callback: () {
+                              Navigator.of(context).pop();
+                            },
+                            type: "grey",
+                          ),
                           SizedBox(height: 50),
                         ],
                       ),

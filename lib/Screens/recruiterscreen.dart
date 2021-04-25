@@ -6,17 +6,19 @@ import '../Models/User.dart';
 import '../Utilities/Widgets/appbar.dart';
 import "../Utilities/UIHelpers/dailogs.dart";
 import '../Utilities/Widgets/largebutton.dart';
-import '../Utilities/Widgets/Candidates/candidatealljobs.dart';
-import '../Utilities/Widgets/Candidates/candidateappliedjobs.dart';
+import '../Utilities/Widgets/Recruiter/recruiteralljobs.dart';
+import '../Utilities/Widgets/Recruiter/apliedcandidatejob.dart';
 
+import "../Utilities/UIHelpers/modalhelper.dart";
+import "../Utilities/Widgets/Recruiter/addeditjobform.dart";
 import "../Constansts/theme.dart" as Theme;
 
-class CandidateScreen extends StatefulWidget {
+class RecruiterScreen extends StatefulWidget {
   @override
-  _CandidateScreenState createState() => _CandidateScreenState();
+  _RecruiterScreenState createState() => _RecruiterScreenState();
 }
 
-class _CandidateScreenState extends State<CandidateScreen> {
+class _RecruiterScreenState extends State<RecruiterScreen> {
   int _currentIndex = 0;
   var authProvider;
   User user;
@@ -69,39 +71,19 @@ class _CandidateScreenState extends State<CandidateScreen> {
   Widget build(BuildContext context) {
     //
     return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 5,
-      //   title: Text("Hi, ${user.name}"),
-      //   actions: [
-      //     InkWell(
-      //       onTap: () async {
-      // bool status = await confirmLogout();
-      // if (status) {
-      //   authProvider.logout();
-      //   Navigator.popAndPushNamed(context, "/SignIn");
-      // }
-      //       },
-      //       child: Padding(
-      //         padding: const EdgeInsets.all(8.0),
-      //         child: Icon(Icons.logout, size: 25),
-      //       ),
-      //     )
-      //   ],
-      // ),
       appBar: myAppBar(
         username: "${user.name}",
         callback: () async {
           bool status = await confirmLogout();
           if (status) {
             authProvider.logout();
-            Navigator.popAndPushNamed(context, "/SignIn");
             // Navigator.popAndPushNamed(context, "/SignIn");
             Navigator.popAndPushNamed(context, "/");
           }
         },
       ),
       backgroundColor: Colors.white,
-      body: (_currentIndex == 0) ? CandidateAllJobs() : CandidateAppliedJobs(),
+      body: (_currentIndex == 0) ? RecruiterAllJobs() : AppliedCandidateJobs(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.grey_bg_1,
         selectedItemColor: Colors.blue,
@@ -110,11 +92,11 @@ class _CandidateScreenState extends State<CandidateScreen> {
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.work),
-            label: 'All Jobs',
+            label: 'Posted Jobs',
           ),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.mail),
-            label: 'Applied Jobs',
+            icon: new Icon(Icons.account_circle_rounded),
+            label: 'Applied Candidates',
           ),
         ],
         onTap: (index) {
@@ -125,6 +107,17 @@ class _CandidateScreenState extends State<CandidateScreen> {
           }
         },
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        elevation: 5,
+        onPressed: () {
+          ModalHelper.getInstance.show(context, AddEditJobForm());
+        },
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(35))),
+        icon: Icon(Icons.add),
+        label: Text("Post New Job", style: Theme.white_textstyle),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

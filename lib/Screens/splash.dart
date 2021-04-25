@@ -4,10 +4,10 @@ import '../../Utilities/Widgets/mainlogo.dart';
 class Splash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+                child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

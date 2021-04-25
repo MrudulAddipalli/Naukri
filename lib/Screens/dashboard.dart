@@ -5,6 +5,7 @@ import '../Providers/AuthProvider.dart';
 
 import '../Models/User.dart';
 import '../Screens/candidatescreen.dart';
+import '../Screens/recruiterscreen.dart';
 
 class DashBoard extends StatefulWidget {
   @override
@@ -24,6 +25,6 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   Widget build(BuildContext context) {
-    return (loggedInUser.userRole == 0) ? CandidateScreen() : CandidateScreen();
+    return (loggedInUser.userRole == 1) ? CandidateScreen() : RecruiterScreen();
   }
 }

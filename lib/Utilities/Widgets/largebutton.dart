@@ -43,7 +43,9 @@ class LargeButton extends StatelessWidget {
           child: Text(
             text ?? "",
             style: TextStyle(
-                fontSize: 20, color: Colors.white, fontWeight: FontWeight.w500),
+                fontSize: 20,
+                color: (type == "grey") ? Colors.black : Colors.white,
+                fontWeight: FontWeight.w500),
           ),
         ),
       ),

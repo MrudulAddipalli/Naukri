@@ -37,10 +37,10 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: LayoutBuilder(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: LayoutBuilder(
           builder: (context, constraint) {
             return SingleChildScrollView(
               child: Align(
@@ -76,7 +76,7 @@ class _SignInState extends State<SignIn> {
                                     errorBorder: InputBorder.none,
                                     disabledBorder: InputBorder.none,
                                     hintText: "Email",
-                                    hintStyle: Theme.textfield_textstyle,
+                                    hintStyle: Theme.hint_textfield_textstyle,
                                   ),
                                 ),
                               ),
@@ -104,7 +104,8 @@ class _SignInState extends State<SignIn> {
                                           errorBorder: InputBorder.none,
                                           disabledBorder: InputBorder.none,
                                           hintText: "Password",
-                                          hintStyle: Theme.textfield_textstyle,
+                                          hintStyle:
+                                              Theme.hint_textfield_textstyle,
                                         ),
                                       ),
                                     ),
@@ -136,7 +137,7 @@ class _SignInState extends State<SignIn> {
                                 ErrorText(text: errors["password"].toString()),
                             ],
                           ),
-                          SizedBox(height: 30),
+                          SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -152,77 +153,74 @@ class _SignInState extends State<SignIn> {
                               ),
                             ],
                           ),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 30, 0, 30),
-                            child: LargeButton(
-                              text: (!widget.loading) ? "Sign In" : "Loading",
-                              callback: () async {
+                          SizedBox(height: 10),
+                          LargeButton(
+                            text: (!widget.loading) ? "Sign In" : "Loading",
+                            callback: () async {
+                              setState(() {
+                                widget.loading = true;
+                              });
+                              //
+                              User userdata = User(
+                                email: _emailController.text,
+                                password: _passController.text,
+                              );
+                              //
+                              Map<String, dynamic> response =
+                                  await authProvider.signIn(userdata);
+                              //
+                              if (response["status"] == "success") {
+                                print("success");
                                 setState(() {
-                                  widget.loading = true;
+                                  errors = {};
                                 });
-                                //
-                                User userdata = User(
-                                  email: _emailController.text,
-                                  password: _passController.text,
-                                );
-                                //
-                                Map<String, dynamic> response =
-                                    await authProvider.signIn(userdata);
-                                //
-                                if (response["status"] == "success") {
-                                  print("success");
-                                  setState(() {
-                                    errors = {};
-                                  });
 
-                                  //
-                                  Navigator.popAndPushNamed(
-                                      context, '/DashBoard');
-                                  //
-                                } else {
-                                  print("failed");
-                                  setState(() {
-                                    errors = response["errors"];
-                                  });
+                                //
+                                Navigator.popAndPushNamed(
+                                    context, '/DashBoard');
+                                //
+                              } else {
+                                print("failed");
+                                setState(() {
+                                  errors = response["errors"];
+                                });
 
-                                  //
-                                  if (errors["generalerror"].toString() !=
-                                      "null") {
-                                    bool status =
-                                        await Dialogs.getInstance.confirmDialog(
-                                      context: context,
-                                      title: "Alert",
-                                      subtitle: errors["generalerror"],
-                                      actions: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Expanded(
-                                            flex: 5,
-                                            child: LargeButton(
-                                              text: "Cancel",
-                                              callback: () {
-                                                Navigator.of(context)
-                                                    .pop(false);
-                                              },
-                                              type: "green",
-                                            ),
+                                //
+                                if (errors["generalerror"].toString() !=
+                                    "null") {
+                                  bool status =
+                                      await Dialogs.getInstance.confirmDialog(
+                                    context: context,
+                                    title: "Alert",
+                                    subtitle: errors["generalerror"],
+                                    actions: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Expanded(
+                                          flex: 5,
+                                          child: LargeButton(
+                                            text: "Cancel",
+                                            callback: () {
+                                              Navigator.of(context).pop(false);
+                                            },
+                                            type: "green",
                                           ),
-                                        ],
-                                      ),
-                                    );
-                                  }
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 }
-                                setState(() {
-                                  widget.loading = false;
-                                });
-                              },
-                              type: "blue",
-                            ),
+                              }
+                              setState(() {
+                                widget.loading = false;
+                              });
+                            },
+                            type: "blue",
                           ),
                           if (widget.loading) SizedBox(height: 20),
                           if (widget.loading) CircularProgressIndicator(),
-                          SizedBox(height: 80),
+                          SizedBox(height: 50),
                           Wrap(
                             children: [
                               Text(

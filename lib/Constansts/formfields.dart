@@ -13,4 +13,16 @@ final List<String> skills = [
   "Linux",
 ];
 
-final List<String> userroles = ["Recruiter", "Candidate"];
+final List<String> userroles = [
+  "Recruiter",
+  "Candidate",
+];
+
+final List<String> jobLocations = [
+  "Mumbai",
+  "Delhi",
+  "Bangalore",
+  "Pune",
+  "Hyderabad",
+  "Chennai",
+];
