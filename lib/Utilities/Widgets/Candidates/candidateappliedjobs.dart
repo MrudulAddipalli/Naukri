@@ -5,7 +5,7 @@ import '../../../Providers/JobProvider.dart';
 import '../../../Models/Job.dart';
 import "../../../Utilities/UIHelpers/dailogs.dart";
 import '../../Widgets/largebutton.dart';
-
+import "../../../Constansts/theme.dart" as Theme;
 import "../../Widgets/Candidates/candidatejoblist.dart";
 
 class CandidateAppliedJobs extends StatefulWidget {
@@ -74,7 +74,19 @@ class CandidateAppliedJobsState extends State<CandidateAppliedJobs> {
         ? Center(
             child: (errors == null)
                 ? CircularProgressIndicator()
-                : Text('Oops!! Something Went Wrong'),
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            Navigator.popAndPushNamed(context, "/");
+                          },
+                          child:
+                              Icon(Icons.refresh, size: 40, color: Theme.blue)),
+                      SizedBox(height: 10),
+                      Text('Oops!! Something Went Wrong'),
+                    ],
+                  ),
           )
         : RefreshIndicator(
             onRefresh: () async {
