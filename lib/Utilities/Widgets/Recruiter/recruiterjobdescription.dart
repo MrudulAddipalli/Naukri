@@ -95,7 +95,19 @@ class _RecruiterJobDescriptionState extends State<RecruiterJobDescription> {
           : Center(
               child: (errors == null)
                   ? CircularProgressIndicator()
-                  : Text('Oops!! Something Went Wrong'),
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              Navigator.popAndPushNamed(context, "/");
+                            },
+                            child: Icon(Icons.refresh,
+                                size: 40, color: Theme.blue)),
+                        SizedBox(height: 10),
+                        Text('Oops!! Something Went Wrong'),
+                      ],
+                    ),
             ),
     );
   }
@@ -136,7 +148,7 @@ class _DescriptionState extends State<Description> {
       builder: (BuildContext cx) {
         return AlertDialog(
           title: Text("Are you Sure ?"),
-          content: Text("you want to delete this category?"),
+          content: Text("you want to delete this job post?"),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           actions: <Widget>[
@@ -298,7 +310,7 @@ class _DescriptionState extends State<Description> {
                 Divider(thickness: 2),
                 SizedBox(height: 10),
                 Text(
-                  "last Updated On - ${timeAgo(widget.singleJobDesc.updatedAt)}" ??
+                  "Last Updated On - ${timeAgo(widget.singleJobDesc.updatedAt)}" ??
                       "Time",
                   style: Theme.black_textstyle,
                 ),

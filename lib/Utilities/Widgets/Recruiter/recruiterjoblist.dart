@@ -20,7 +20,18 @@ class RecruiterJobListState extends State<RecruiterJobList> {
   @override
   Widget build(BuildContext context) {
     return (widget.jobData == null)
-        ? Text('Oops!! Something Went Wrong')
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              InkWell(
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, "/");
+                  },
+                  child: Icon(Icons.refresh, size: 40, color: Theme.blue)),
+              SizedBox(height: 10),
+              Text('Oops!! Something Went Wrong'),
+            ],
+          )
         : SingleChildScrollView(
             child: ListView.builder(
                 physics: NeverScrollableScrollPhysics(),

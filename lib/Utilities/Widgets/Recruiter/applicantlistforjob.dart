@@ -97,7 +97,19 @@ class ApplicantListForJobIDState extends State<ApplicantListForJobID> {
               ? Center(
                   child: (errors == null)
                       ? CircularProgressIndicator()
-                      : Text('Oops!! Something Went Wrong'),
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                                onTap: () {
+                                  Navigator.popAndPushNamed(context, "/");
+                                },
+                                child: Icon(Icons.refresh,
+                                    size: 40, color: Theme.blue)),
+                            SizedBox(height: 10),
+                            Text('Oops!! Something Went Wrong'),
+                          ],
+                        ),
                 )
               : RefreshIndicator(
                   onRefresh: () async {

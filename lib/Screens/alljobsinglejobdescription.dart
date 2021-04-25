@@ -91,7 +91,19 @@ class _AllJobSingleJobDescriptionState
           : Center(
               child: (errors == null)
                   ? CircularProgressIndicator()
-                  : Text('Oops!! Something Went Wrong'),
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              Navigator.popAndPushNamed(context, "/");
+                            },
+                            child: Icon(Icons.refresh,
+                                size: 40, color: Theme.blue)),
+                        SizedBox(height: 10),
+                        Text('Oops!! Something Went Wrong'),
+                      ],
+                    ),
             ),
     );
   }
@@ -206,7 +218,7 @@ class _DescriptionState extends State<Description> {
                 Divider(thickness: 2),
                 SizedBox(height: 10),
                 Text(
-                  "last Updated On - ${timeAgo(widget.singleJobDesc.updatedAt)}" ??
+                  "Last Updated On - ${timeAgo(widget.singleJobDesc.updatedAt)}" ??
                       "Time",
                   style: Theme.black_textstyle,
                 ),
